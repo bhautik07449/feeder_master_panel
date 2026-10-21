@@ -25,7 +25,7 @@ export const CommonRadioGroup: React.FC<CommonRadioGroupProps> = ({
   value,
   onChange,
   variant = 'radio',
-  orientation = 'vertical',
+  orientation,
   error,
   helperText,
   required,
@@ -33,6 +33,8 @@ export const CommonRadioGroup: React.FC<CommonRadioGroupProps> = ({
   containerClassName,
   disabled = false,
 }) => {
+  const effectiveOrientation = orientation ?? (variant === 'pills' ? 'horizontal' : 'vertical');
+
   const formattedOptions: SelectOption[] = options.map((opt) => {
     if (typeof opt === 'string') {
       return { value: opt, label: opt };
@@ -41,7 +43,7 @@ export const CommonRadioGroup: React.FC<CommonRadioGroupProps> = ({
   });
 
   return (
-    <div className={cn('w-full flex flex-col gap-2', containerClassName)}>
+    <div className={cn('w-full flex flex-col gap-1.5', containerClassName)}>
       {label && (
         <span className="text-xs font-semibold text-slate-700 uppercase tracking-wider flex items-center">
           {label}
@@ -55,8 +57,8 @@ export const CommonRadioGroup: React.FC<CommonRadioGroupProps> = ({
           role="radiogroup"
           aria-label={label}
           className={cn(
-            'inline-flex p-1 bg-slate-100 rounded-lg border border-slate-200/80 gap-1',
-            orientation === 'vertical' ? 'flex-col' : 'flex-row flex-wrap',
+            'inline-flex p-1 bg-slate-100 rounded-lg border border-slate-200/80 gap-1 w-full',
+            effectiveOrientation === 'vertical' ? 'flex-col' : 'flex-row',
             className
           )}
         >

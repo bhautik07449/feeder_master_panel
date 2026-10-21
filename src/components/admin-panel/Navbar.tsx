@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/hooks/redux-hooks';
-import { setSelectedRole } from '@/store/slice/authSlice';
+import { setSelectedRole, logout } from '@/store/slice/authSlice';
+import { masterAuthApi } from '@/services/authApi';
 import {
   BRAND_CONFIG,
   MASTER_ROLES,
@@ -133,12 +134,16 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
           {/* Quick Screen Switcher back to Login / Registration */}
           <button
             type="button"
-            onClick={() => navigate(ROUTES.LOGIN)}
-            className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg border border-slate-200 transition-colors"
-            title="Switch to Master Panel Login / Registration Screen"
+            onClick={async () => {
+              await masterAuthApi.logout();
+              dispatch(logout());
+              navigate(ROUTES.LOGIN);
+            }}
+            className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg border border-slate-200 transition-colors cursor-pointer"
+            title="Logout to Master Panel Login / Registration Screen"
           >
             <LogOut className="w-3.5 h-3.5" />
-            <span>Login Screen</span>
+            <span>Logout</span>
           </button>
 
           {/* User Profile Pill & Dropdown (Image 2 sketch) */}
@@ -175,8 +180,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
                   </CommonBadge>
                 </div>
                 <button
-                  onClick={() => navigate(ROUTES.LOGIN)}
-                  className="w-full flex items-center gap-2 px-2.5 py-1.5 text-xs font-semibold text-rose-600 hover:bg-rose-50 rounded-lg transition-colors text-left"
+                  onClick={async () => {
+                    await masterAuthApi.logout();
+                    dispatch(logout());
+                    navigate(ROUTES.LOGIN);
+                  }}
+                  className="w-full flex items-center gap-2 px-2.5 py-1.5 text-xs font-semibold text-rose-600 hover:bg-rose-50 rounded-lg transition-colors text-left cursor-pointer"
                 >
                   <LogOut className="w-3.5 h-3.5" />
                   <span>Exit to Login Screen</span>

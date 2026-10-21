@@ -10,6 +10,7 @@ export interface UserProfile {
   email: string;
   role: MasterRole;
   organization?: string;
+  phone?: string;
 }
 
 export interface TaskItem {
